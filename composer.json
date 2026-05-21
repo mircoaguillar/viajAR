@@ -17,6 +17,7 @@
         "phpoffice/phpspreadsheet": "1.23",
         "dompdf/dompdf": "^3.1",
         "pusher/pusher-php-server": "^7.2",
-        "mercadopago/dx-php": "^2.6"
+        "mercadopago/dx-php": "^2.6",
+        "vlucas/phpdotenv": "^5.6"
     }
 }

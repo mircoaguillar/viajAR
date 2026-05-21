@@ -7,10 +7,10 @@ class Conexion {
     private $base_datos;
 
     public function __construct() {
-        $this->servidor = 'localhost';
-        $this->usuario = 'root';
-        $this->password = 'hola';
-        $this->base_datos = 'viajar';
+        $this->servidor = $_ENV['DB_HOST'];
+        $this->usuario = $_ENV['DB_USER'];
+        $this->password = $_ENV['DB_PASS'];
+        $this->base_datos = $_ENV['DB_NAME'];
     }
 
     public function conectar() {
