@@ -38,7 +38,6 @@ if (!$detalle) {
     exit;
 }
 
-// Obtener la referencia a la reserva principal
 $id_reserva = $detalle['rela_reservas']; 
 
 $reservaModel->registrarCancelacion($id_detalle, $motivo, $comentario);
@@ -68,7 +67,6 @@ if (count($detallesActivos) === 0) {
 }
 
 try {
-    // Enviar correo al usuario
     $phpmailer = new PHPMailer(true);
     $phpmailer->isSMTP();
     $phpmailer->Host = 'smtp.gmail.com';

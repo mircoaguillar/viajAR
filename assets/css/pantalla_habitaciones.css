@@ -1,287 +1,278 @@
-/* General */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f9f9f9;
-  margin: 0;
-  padding: 0;
-  color: #333;
+/* =========================================
+   1. RESET & VARIABLES
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Cabecera fija */
+:root {
+    --primary-blue: #2943b9;
+    --white: #ffffff;
+    --bg-light: #f4f7fe;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg-light);
+    color: #333;
+}
+
+/* =========================================
+   2. CABECERA (Consistente con el sitio)
+   ========================================= */
 .top-bar {
-  background-color: #2943b9;
-  padding: 12px 20px;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
+    background-color: var(--primary-blue);
+    padding: 12px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
 .top-bar .left-links {
-  display: flex;
-  align-items: center;
-  gap: 40px; /* espacio entre logo y menú */
+    display: flex;
+    align-items: center;
+    gap: 40px; 
 }
 
 .top-bar .logo a {
-  color: white;
-  font-size: 1.5rem;
-  text-decoration: none;
-  font-weight: bold;
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-/* Links en fila */
-.top-bar .nav-links {
-  display: flex;
-  gap: 25px; /* siguen uno al lado del otro */
-}
-
-.top-bar .nav-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Hover de los links */
-.top-bar .nav-links a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffd700;
-  text-decoration: none;
-}
-
-/* Link activo - queda fijo al hacer click */
-.top-bar .nav-links a.active {
-  background-color: rgba(255, 255, 255, 0.2); /* blanco semi-transparente */
-  color: #fff;
-  font-weight: bold;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* sombra sutil */
-}
-
-
+/* Agrupamos nav-links y right-links para que compartan el estilo de los a */
+.top-bar .nav-links, 
 .top-bar .right-links {
-  display: flex;
-  gap: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
-.top-bar .right-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
+/* Estilo universal para todos los links de la cabecera */
+.top-bar a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
 }
 
+/* Estilo de "botón" solo para los del centro (opcional, si querés que los de la derecha sean solo texto) */
+.top-bar .nav-links a {
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Hover universal: ahora sí le pega a los de la derecha */
+.top-bar .nav-links a:hover,
 .top-bar .right-links a:hover {
-  text-decoration: underline;
-  color: #ffd700; /* opcional: mismo efecto */
+    color: #ffd700;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-
-/* ========================= */
-/* Compensar cabecera fija    */
-/* ========================= */
-.content {
-  padding-top: 100px; /* suficiente espacio para la cabecera fija */
-  max-width: 1200px;
-  margin: 0 auto;
+/* El link activo (solo para el menú principal) */
+.top-bar .nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Hero */
+/* Específicamente para que los de la derecha no tengan el fondo gris si preferís que sean más limpios */
+.top-bar .right-links a:hover {
+    background-color: transparent; 
+    text-decoration: underline;
+}
+
+/* =========================================
+   3. HERO & BUSCADOR (Solución al choque de cabecera)
+   ========================================= */
 .habitaciones-hero {
-  background-color: #0056b3;
-  color: #fff;
-  padding: 40px 0;
-  text-align: center;
+    background-color: var(--primary-blue);
+    padding: 140px 20px 40px; /* Aumentamos padding superior para que no tape el título */
+    text-align: center;
+    color: var(--white);
 }
 
 .habitaciones-hero h1 {
-  margin: 0;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-/* Lista de habitaciones */
-.habitaciones-lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-  margin: 40px 0;
-}
-
-/* Tarjeta de habitación */
-.habitacion-card {
-  background-color: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-/* Info de la habitación */
-.habitacion-info {
-  padding: 20px;
-}
-
-.habitacion-info h3 {
-  margin-top: 0;
-  font-size: 1.5rem;
-  color: #0056b3;
-}
-
-.habitacion-info p {
-  margin: 10px 0;
-  line-height: 1.4;
-}
-
-.habitacion-info .precio {
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: rgba(0, 0, 0, 0.842);
-  margin-top: 10px;
-}
-
-.btn-reservar {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, #0056b3, #0071e3);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-
-.btn-reservar:hover {
-  background: linear-gradient(135deg, #003f7f, #0056b3);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-}
-
-.btn-reservar:active {
-  transform: translateY(1px);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-}
-
-
-/* Fotos */
-.habitacion-fotos {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 20px 20px 20px;
-}
-
-.foto-principal {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-/* Miniaturas */
-.miniaturas {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-top: 5px;
-}
-
-.miniaturas img {
-  width: 60px;
-  height: 60px;
-  border-radius: 4px;
-  object-fit: cover;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.miniaturas img:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-/* Scrollbar miniaturas (opcional) */
-.miniaturas::-webkit-scrollbar {
-  height: 6px;
-}
-
-.miniaturas::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 3px;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
 }
 
 .habitaciones-buscador {
-  background-color: #f5f5f5;
-  padding: 20px;
-  margin: 20px auto 40px auto;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
+    background-color: var(--primary-blue);
+    padding-bottom: 60px;
+    display: flex;
+    justify-content: center;
 }
 
 .habitaciones-buscador form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  width: 100%;
-  max-width: 900px;
-  align-items: flex-end;
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 15px 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .buscador-group {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 150px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
 }
 
 .buscador-group label {
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #0056b3;
+    font-size: 0.85rem;
+    color: var(--white);
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
 .buscador-group input {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
+    width: 180px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.95rem;
+    box-shadow: var(--shadow);
 }
 
 .btn-buscar {
-  padding: 12px 25px;
-  background-color: #0056b3;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    background-color: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    height: 42px;
+    padding: 0 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .btn-buscar:hover {
-  background-color: #003f7f;
+    background-color: var(--white);
+    color: var(--primary-blue);
+}
+
+/* =========================================
+   4. GRILLA DE HABITACIONES (Estilo Card igual a Hoteles)
+   ========================================= */
+.habitaciones-lista {
+    max-width: 1200px;
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.habitacion-card {
+    background: var(--white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column; /* Esto pone la foto arriba y el texto abajo */
+    transition: transform 0.3s ease;
+}
+
+.habitacion-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Contenedor de Fotos arriba */
+.habitacion-fotos {
+    order: -1; /* Asegura que las fotos vayan primero */
+    padding: 0;
+}
+
+.foto-principal {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.miniaturas {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background: #f8f8f8;
+    overflow-x: auto;
+}
+
+.miniaturas img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Info abajo */
+.habitacion-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.habitacion-info h3 {
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.habitacion-info p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.habitacion-info .precio {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin: 15px 0;
+}
+
+.btn-reservar {
+    width: 100%;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: auto; /* Empuja el botón al final de la card */
+}
+
+.btn-reservar:hover {
+    background: #1f3499;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .habitaciones-lista {
-    grid-template-columns: 1fr;
-  }
+    .habitaciones-buscador form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .buscador-group input {
+        width: 100%;
+    }
 }

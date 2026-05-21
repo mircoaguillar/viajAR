@@ -1,6 +1,3 @@
-/* =========================================
-   1. RESET & VARIABLES
-   ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -21,9 +18,6 @@ body {
     color: #333;
 }
 
-/* =========================================
-   2. CABECERA (Consistente)
-   ========================================= */
 .top-bar {
     background-color: var(--primary-blue);
     padding: 12px 20px;
@@ -91,9 +85,6 @@ body {
     color: #ffd700;
 }
 
-/* =========================================
-   3. HERO & BUSCADOR (Igual a Transporte)
-   ========================================= */
 .hero-section {
     background-color: var(--primary-blue);
     padding: 120px 20px 30px;
@@ -115,7 +106,7 @@ body {
 
 .search-container {
     width: 100%;
-    max-width: 600px; /* Al ser solo 1 o 2 campos, lo mantenemos más angosto */
+    max-width: 600px;
     text-align: center;
 }
 
@@ -179,9 +170,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* =========================================
-   4. LISTADO DE TOURS / GUÍAS
-   ========================================= */
 .tours {
     max-width: 1200px;
     margin: 50px auto;
@@ -206,11 +194,8 @@ body {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
-}
-
-.tarjeta:hover {
-    transform: translateY(-10px);
+    display: flex;
+    flex-direction: column;
 }
 
 .tarjeta img {
@@ -235,6 +220,19 @@ body {
     margin-bottom: 20px;
 }
 
+.info-extra {
+    margin: 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-extra span {
+    font-size: 0.92rem;
+    color: #444;
+    font-weight: 500;
+}
+
 .boton-ver-mas {
     display: block;
     text-align: center;
@@ -247,13 +245,7 @@ body {
     transition: background 0.3s;
 }
 
-.boton-ver-mas:hover {
-    background: #1f3499;
-}
 
-/* =========================================
-   5. FOOTER (Consistente)
-   ========================================= */
 .footer {
     background: var(--primary-blue);
     color: var(--white);
@@ -300,7 +292,36 @@ body {
     font-size: 0.85rem;
 }
 
-/* Responsive */
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 50px 0;
+    flex-wrap: wrap;
+}
+
+.paginacion a {
+    padding: 10px 16px;
+    background: white;
+    color: var(--primary-blue);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.paginacion a:hover {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.paginacion a.activo {
+    background: var(--primary-blue);
+    color: white;
+}
+
 @media (max-width: 768px) {
     .search-form {
         flex-direction: column;

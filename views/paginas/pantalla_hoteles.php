@@ -9,11 +9,39 @@ $destino = trim($_GET['destino'] ?? '');
 
 $hotelModel = new Hotel();
 
-if ($destino) {
-    $hoteles = $hotelModel->buscar_por_ciudad($destino);
-} else {
-    $hoteles = $hotelModel->traer_hoteles_aprobados();
+$porPagina = 6;
+
+$paginaActual = isset($_GET['page_num']) 
+    ? (int)$_GET['page_num'] 
+    : 1;
+
+if ($paginaActual < 1) {
+    $paginaActual = 1;
 }
+
+$offset = ($paginaActual - 1) * $porPagina;
+
+if ($destino) {
+
+    $hoteles = $hotelModel->buscar_por_ciudad_paginado(
+        $destino,
+        $porPagina,
+        $offset
+    );
+
+    $totalHoteles = $hotelModel->contar_hoteles_por_ciudad($destino);
+
+} else {
+
+    $hoteles = $hotelModel->traer_hoteles_aprobados_paginados(
+        $porPagina,
+        $offset
+    );
+
+    $totalHoteles = $hotelModel->contar_hoteles();
+}
+
+$totalPaginas = ceil($totalHoteles / $porPagina);
 ?>
 
 <!DOCTYPE html>
@@ -78,6 +106,23 @@ if ($destino) {
       <p>No se encontraron hoteles para tu búsqueda.</p>
     <?php endif; ?>
   </div>
+
+  <?php if ($totalPaginas > 1): ?>
+  <div class="pagination">
+
+      <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+
+          <a 
+              href="?page=pantalla_hoteles&destino=<?= $destino ?>&page_num=<?= $i ?>"
+              class="<?= ($i == $paginaActual) ? 'active' : '' ?>"
+          >
+              <?= $i ?>
+          </a>
+
+      <?php endfor; ?>
+
+  </div>
+  <?php endif; ?>
 </section>
 
 <?php include_once("views/componentes/pie.php"); ?>

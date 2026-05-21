@@ -11,13 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const HAB_URL = idHabitacionUrl || "";    
     const HOTEL_PRE = hotelPreseleccionado || "";
 
-const urlParams = new URLSearchParams(window.location.search);
-const idHabitacion = urlParams.get("id_habitacion");
+    const urlParams = new URLSearchParams(window.location.search);
+    const idHabitacion = urlParams.get("id_habitacion");
 
-
-    /* =====================================================
-       MODAL PERSONALIZADO — COMPLETAMENTE FUNCIONAL
-       ===================================================== */
     function mostrarModal(mensaje) {
     const modal = document.getElementById("custom-alert");
     const msgBox = document.getElementById("custom-alert-msg");
@@ -26,7 +22,6 @@ const idHabitacion = urlParams.get("id_habitacion");
     msgBox.textContent = mensaje;
     modal.style.display = "flex";
 
-    // Limpio listeners viejos
     const newCloseBtn = closeBtn.cloneNode(true);
     closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
 
@@ -38,21 +33,14 @@ const idHabitacion = urlParams.get("id_habitacion");
 
 
     modal.addEventListener("click", e => {
-    if (e.target === modal) {
-        modal.style.display = "none";
-        window.location.href =
-            "http://localhost/viajar/index.php?page=hoteles_habitaciones&id_hotel=71" ;
-    }
-});
-
+        if (e.target === modal) {
+            modal.style.display = "none";
+            window.location.href =
+                "http://localhost/viajar/index.php?page=hoteles_habitaciones&id_hotel=71" ;
+        }
+    });
 }
 
-
-
-
-    /* =====================================================
-       CARGAR HABITACIONES
-       ===================================================== */
     function cargarHabitaciones(idHotel, callback = null) {
         habitacionSelect.innerHTML = '<option value="">Cargando...</option>';
 
@@ -82,9 +70,6 @@ const idHabitacion = urlParams.get("id_habitacion");
         }
     });
 
-    /* =====================================================
-       PRECARGA AUTOMÁTICA DESDE URL
-       ===================================================== */
     if (HOTEL_PRE !== "") {
         hotelSelect.value = HOTEL_PRE;
         cargarHabitaciones(HOTEL_PRE, () => {
@@ -92,9 +77,6 @@ const idHabitacion = urlParams.get("id_habitacion");
         });
     }
 
-    /* =====================================================
-       VALIDACIONES
-       ===================================================== */
     function validarFormulario() {
         let valido = true;
 
@@ -147,9 +129,6 @@ const idHabitacion = urlParams.get("id_habitacion");
         });
     });
 
-    /* =====================================================
-       PREVISUALIZACIÓN
-       ===================================================== */
     btnPrev.addEventListener('click', () => {
         tbody.innerHTML = '';
 
@@ -177,9 +156,6 @@ const idHabitacion = urlParams.get("id_habitacion");
         previewTable.style.display = 'table';
     });
 
-    /* =====================================================
-       GUARDAR STOCK VIA AJAX
-       ===================================================== */
     form.addEventListener('submit', e => {
         e.preventDefault();
 

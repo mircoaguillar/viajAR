@@ -6,21 +6,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let menuAbierto = false;
 
-  /*  Mostrar menú lateral */
   function abrirMenu() {
     menu.classList.add("menu-visible");
     overlay.classList.add("visible");
     menuAbierto = true;
   }
 
-  /*  Ocultar menú lateral */
   function cerrarMenu() {
     menu.classList.remove("menu-visible");
     overlay.classList.remove("visible");
     menuAbierto = false;
   }
 
-  /*  Botón de apertura/cierre */
   if (toggleButton) {
     toggleButton.addEventListener("click", function () {
       if (menuAbierto) {
@@ -31,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /*  Cerrar al hacer clic en el overlay */
   if (overlay) {
     overlay.addEventListener("click", function () {
       cerrarMenu();

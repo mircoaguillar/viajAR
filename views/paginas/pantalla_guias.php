@@ -9,10 +9,39 @@ $fecha = $_GET['fecha'] ?? '';
 
 $tourModel = new Tour();
 
+$fecha = $_GET['fecha'] ?? '';
+
+$tourModel = new Tour();
+
+$porPagina = 6;
+
+$paginaActual = isset($_GET['page_num'])
+    ? (int)$_GET['page_num']
+    : 1;
+
+if ($paginaActual < 1) {
+    $paginaActual = 1;
+}
+
+$offset = ($paginaActual - 1) * $porPagina;
+
 if ($fecha) {
+
     $tours = $tourModel->buscar($fecha);
+
+    $totalTours = count($tours);
+    $totalPaginas = 1;
+
 } else {
-    $tours = $tourModel->traer_tours();
+
+    $tours = $tourModel->traer_tours_paginados(
+        $porPagina,
+        $offset
+    );
+
+    $totalTours = $tourModel->contar_tours();
+
+    $totalPaginas = ceil($totalTours / $porPagina);
 }
 
 ?>
@@ -61,7 +90,29 @@ if ($fecha) {
           <div class="contenido">
             <h3><?= htmlspecialchars($tour['nombre_tour']) ?></h3>
             <p><?= htmlspecialchars($tour['descripcion'] ?? '-') ?></p>
-            <p><strong>Duración:</strong> <?= htmlspecialchars($tour['duracion_horas']) ?> horas</p>
+            <?php
+            $partes = explode(':', $tour['duracion_horas']);
+
+            $horas = (int)$partes[0];
+            $minutos = (int)$partes[1];
+
+            $duracionTexto = '';
+
+            if ($horas > 0) {
+                $duracionTexto .= $horas == 1
+                    ? '1 hora'
+                    : $horas . ' horas';
+            }
+
+            if ($minutos > 0) {
+                if ($duracionTexto != '') {
+                    $duracionTexto .= ' ';
+                }
+
+                $duracionTexto .= $minutos . ' min';
+            }
+            ?>
+            <p><strong>Duración:</strong> <?= $duracionTexto ?></p>
             <p><strong>Precio:</strong> $<?= number_format($tour['precio_por_persona'], 0, ',', '.') ?></p>
             <?php if (!empty($tour['fecha_inicio'])): ?>
               <p><strong>Inicio:</strong> <?= htmlspecialchars($tour['fecha_inicio']) ?></p>
@@ -74,6 +125,18 @@ if ($fecha) {
       <p>No se encontraron tours para tu búsqueda.</p>
     <?php endif; ?>
   </div>
+
+  <?php if ($totalPaginas > 1): ?>
+  <section class="paginacion">
+      <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+          <a href="?page=pantalla_guias&page_num=<?= $i ?>&fecha=<?= urlencode($fecha) ?>"
+            class="<?= ($i == $paginaActual) ? 'activo' : '' ?>">
+              <?= $i ?>
+          </a>
+      <?php endfor; ?>
+  </section>
+  <?php endif; ?>
+
 </section>
 
 <?php include_once("views/componentes/pie.php"); ?>

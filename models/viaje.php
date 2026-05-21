@@ -165,6 +165,69 @@ class Viaje {
         return !empty($result) ? $result : [];
     }
 
+    public function traer_viajes_paginados($limit, $offset) {
+        $conexion = new Conexion();
+
+        $limit = (int)$limit;
+        $offset = (int)$offset;
+
+        $hoy = date('Y-m-d');
+
+        $query = "
+            SELECT viajes.id_viajes, 
+                viajes.viaje_fecha, 
+                viajes.hora_salida, 
+                viajes.hora_llegada,
+                c1.nombre AS origen, 
+                c2.nombre AS destino,
+                transporte.nombre_servicio, 
+                transporte_rutas.precio_por_persona, 
+                transporte.imagen_principal
+
+            FROM viajes
+
+            JOIN transporte_rutas 
+                ON viajes.rela_transporte_rutas = transporte_rutas.id_ruta
+
+            JOIN transporte 
+                ON transporte_rutas.rela_transporte = transporte.id_transporte
+
+            JOIN ciudades c1 
+                ON transporte_rutas.rela_ciudad_origen = c1.id_ciudad
+
+            JOIN ciudades c2 
+                ON transporte_rutas.rela_ciudad_destino = c2.id_ciudad
+
+            WHERE viajes.activo = 1
+            AND viajes.viaje_fecha >= '$hoy'
+
+            ORDER BY viajes.viaje_fecha ASC
+
+            LIMIT $limit OFFSET $offset
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function contar_viajes() {
+        $conexion = new Conexion();
+        
+        $hoy = date('Y-m-d');
+
+        $query = "
+            SELECT COUNT(*) as total
+
+            FROM viajes
+
+            WHERE activo = 1
+            AND viaje_fecha >= '$hoy'
+        ";
+
+        $resultado = $conexion->consultar($query);
+
+        return $resultado[0]['total'];
+    }
+
 
     public function traer_viajes_por_ruta($id_ruta){
         $conexion = new Conexion();

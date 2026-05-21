@@ -29,7 +29,6 @@ function validate() {
     }
 }
 
-/* Funcion para mostrar/ocultar contraseña */
 function togglePassword() {
     const passwordInput = document.getElementById("password");
     const hideEye = document.getElementById("hide_eye");
@@ -46,7 +45,6 @@ function togglePassword() {
     }
 }
 
-/* ---- SweetAlert2 Toasts para backend ---- */
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const message = urlParams.get('message');

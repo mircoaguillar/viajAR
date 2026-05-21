@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const descripcion = document.getElementById("descripcion");
   let contadorPisos = 0;
 
-  // ----------------- CONTADOR DESCRIPCIÓN -----------------
   const contador = document.createElement("small");
   contador.id = "contadorDescripcion";
   contador.style.display = "block";
@@ -26,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
     eliminarError(descripcion);
   });
 
-  // ----------------- ERRORES -----------------
   function mostrarError(input, mensaje) {
     eliminarError(input);
     input.classList.add("error-input");
@@ -49,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     campo.addEventListener("change", () => eliminarError(campo));
   });
 
-  // ----------------- PISOS -----------------
   const errorPisosMsg = document.createElement("small");
   errorPisosMsg.className = "error-msg";
   errorPisosMsg.style.display = "none";
@@ -91,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     contenedorPisos.appendChild(pisoDiv);
   });
 
-  // ----------------- VALIDAR Y ENVIAR -----------------
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     let valido = true;
@@ -105,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const regexMatricula = /^[A-Z]{3}\d{3}$|^[A-Z]{2}\d{3}[A-Z]{2}$/i;
     const regexNombre = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,}$/;
 
-    // Matrícula
     if (matricula.value.trim() === "") {
       mostrarError(matricula, "La matrícula es obligatoria.");
       valido = false;
@@ -114,40 +109,34 @@ document.addEventListener("DOMContentLoaded", () => {
       valido = false;
     }
 
-    // Capacidad
     const num = parseInt(capacidad.value, 10);
     if (isNaN(num) || num < 1 || num > 100) {
       mostrarError(capacidad, "Capacidad entre 1 y 100 personas.");
       valido = false;
     }
 
-    // Tipo
     if (tipo.value === "") {
       mostrarError(tipo, "Seleccioná un tipo de transporte.");
       valido = false;
     }
 
-    // Nombre
     if (!regexNombre.test(nombre.value.trim())) {
       mostrarError(nombre, "Mínimo 3 letras. Solo texto y espacios.");
       valido = false;
     }
 
-    // Descripción
     const descVal = descripcion.value.trim();
     if (descVal === "") {
       mostrarError(descripcion, "Falta datos en descripción.");
       valido = false;
     }
 
-    // Imagen
     const archivo = imagen.files[0];
     if (!archivo) {
       mostrarError(imagen, "Debes subir una imagen principal.");
       valido = false;
     }
 
-    // Pisos completos
     const pisos = contenedorPisos.querySelectorAll(".piso-card");
     pisos.forEach((piso) => {
       const filas = piso.querySelector(".filas-input");
@@ -161,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!valido) return;
 
-    // ----------------- SWEET ALERT CONFIRMACIÓN -----------------
     const confirmacion = await Swal.fire({
       title: "¿Guardar transporte?",
       text: "Se enviará para revisión.",
@@ -173,7 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!confirmacion.isConfirmed) return;
 
-    // ----------------- ENVIAR FORM -----------------
     const formData = new FormData(form);
 
     fetch("controllers/transportes/transporte.controlador.php", {

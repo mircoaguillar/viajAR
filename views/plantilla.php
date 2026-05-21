@@ -49,6 +49,8 @@ function guard($id_perfiles) {
         <link rel="stylesheet" href="assets/css/cabecera_proveedores.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
         <script src="assets/js/cabecera_proveedores.js"></script>
+    <?php else: ?>
+        <link rel="stylesheet" href="assets/css/cabecera_publica.css">
     <?php endif; ?>
 </head>
 

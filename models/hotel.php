@@ -206,6 +206,41 @@ class Hotel {
         return $conexion->consultar($query);  
     }
 
+    public function traer_hoteles_aprobados_paginados($limit, $offset) {
+        $conexion = new Conexion();
+
+        $limit = (int)$limit;
+        $offset = (int)$offset;
+
+        $query = "
+            SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion,
+                h.rela_ciudad, h.estado_revision, h.motivo_rechazo
+            FROM hotel h
+            LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
+            WHERE h.activo = 1
+            AND h.estado_revision = 'aprobado'
+            ORDER BY h.fecha_alta DESC
+            LIMIT $limit OFFSET $offset
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function contar_hoteles() {
+        $conexion = new Conexion();
+
+        $query = "
+            SELECT COUNT(*) as total
+            FROM hotel
+            WHERE activo = 1
+            AND estado_revision = 'aprobado'
+        ";
+
+        $resultado = $conexion->consultar($query);
+
+        return $resultado[0]['total'];
+    }
+
     public function liberarHabitacion($id_detalle_reserva) {
         $conexion = new Conexion();
         $queryDetallesHotel = "SELECT * FROM detalle_reserva_hotel WHERE rela_detalle_reserva = $id_detalle_reserva";
@@ -249,6 +284,46 @@ class Hotel {
         ";
 
         return $conexion->consultar($query);
+    }
+
+    public function buscar_por_ciudad_paginado($id_ciudad, $limit, $offset) {
+        $conexion = new Conexion();
+
+        $id_ciudad = (int)$id_ciudad;
+        $limit = (int)$limit;
+        $offset = (int)$offset;
+
+        $query = "
+            SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion,
+                h.rela_ciudad, h.estado_revision, h.motivo_rechazo
+            FROM hotel h
+            LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
+            WHERE h.activo = 1
+            AND h.estado_revision = 'aprobado'
+            AND h.rela_ciudad = $id_ciudad
+            ORDER BY h.fecha_alta DESC
+            LIMIT $limit OFFSET $offset
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function contar_hoteles_por_ciudad($id_ciudad) {
+        $conexion = new Conexion();
+
+        $id_ciudad = (int)$id_ciudad;
+
+        $query = "
+            SELECT COUNT(*) as total
+            FROM hotel
+            WHERE activo = 1
+            AND estado_revision = 'aprobado'
+            AND rela_ciudad = $id_ciudad
+        ";
+
+        $resultado = $conexion->consultar($query);
+
+        return $resultado[0]['total'];
     }
 
 

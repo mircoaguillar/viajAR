@@ -14,12 +14,28 @@ $hasta = $_GET['hasta'] ?? '';
 $viajes = [];
 
 $transporteModel = new Transporte();
-if ($origen || $destino || $desde || $hasta) {
-    $viajes = $transporteModel->buscar($origen, $destino, $desde, $hasta);
-} else {
-    $viajeModel = new Viaje();
-    $viajes = $viajeModel->traer_viajes_proximos(10);
+$porPagina = 6;
+
+$paginaActual = isset($_GET['page_num'])
+    ? (int)$_GET['page_num']
+    : 1;
+
+if ($paginaActual < 1) {
+    $paginaActual = 1;
 }
+
+$offset = ($paginaActual - 1) * $porPagina;
+
+$viajeModel = new Viaje();
+
+$viajes = $viajeModel->traer_viajes_paginados(
+    $porPagina,
+    $offset
+);
+
+$totalViajes = $viajeModel->contar_viajes();
+
+$totalPaginas = ceil($totalViajes / $porPagina);
 
 ?>
 <!DOCTYPE html>
@@ -112,6 +128,21 @@ if ($origen || $destino || $desde || $hasta) {
       <p>No se encontraron viajes para tu búsqueda.</p>
     <?php endif; ?>
   </div>
+
+  <?php if ($totalPaginas > 1): ?>
+  <div class="pagination">
+      <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+          <a href="?page=pantalla_transporte&page_num=<?= $i ?>
+              &origen=<?= $origen ?>
+              &destino=<?= $destino ?>
+              &desde=<?= $desde ?>
+              &hasta=<?= $hasta ?>"
+              class="<?= ($i == $paginaActual) ? 'active' : '' ?>">
+              <?= $i ?>
+          </a>
+      <?php endfor; ?>
+  </div>
+  <?php endif; ?>
 </section>
 
 <?php include_once("views/componentes/pie.php"); ?>

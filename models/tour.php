@@ -67,6 +67,77 @@ class Tour {
         return $conexion->consultar($query);
     }
 
+    public function traer_tours_paginados($limit, $offset, $fecha = null) {
+        $conexion = new Conexion();
+
+        $where = "
+            WHERE t.activo = 1
+            AND t.estado_revision = 'aprobado'
+        ";
+
+        if (!empty($fecha)) {
+            $where .= " AND st.fecha >= '$fecha'";
+        }
+
+        $query = "
+            SELECT 
+                t.*,
+                p.razon_social AS proveedor_nombre,
+                MIN(st.fecha) AS fecha_disponible,
+                SUM(st.cupos_disponibles) AS cupos_disponibles
+
+            FROM tours t
+
+            JOIN proveedores p
+                ON t.rela_proveedor = p.id_proveedores
+
+            LEFT JOIN stock_tour st
+                ON t.id_tour = st.rela_tour
+
+            $where
+
+            GROUP BY t.id_tour
+
+            HAVING cupos_disponibles > 0
+
+            ORDER BY fecha_disponible ASC
+
+            LIMIT $limit OFFSET $offset
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function contar_tours($fecha = null) {
+        $conexion = new Conexion();
+
+        $where = "
+            WHERE t.activo = 1
+            AND t.estado_revision = 'aprobado'
+        ";
+
+        if (!empty($fecha)) {
+            $where .= " AND st.fecha >= '$fecha'";
+        }
+
+        $query = "
+            SELECT COUNT(DISTINCT t.id_tour) AS total
+
+            FROM tours t
+
+            LEFT JOIN stock_tour st
+                ON t.id_tour = st.rela_tour
+
+            $where
+
+            AND st.cupos_disponibles > 0
+        ";
+
+        $resultado = $conexion->consultar($query);
+
+        return $resultado[0]['total'] ?? 0;
+    }
+
     public function traer_tours_por_usuario($id_usuario) {
         $conexion = new Conexion();
         $proveedor = (new Proveedor())->obtenerPorUsuario((int)$id_usuario);
